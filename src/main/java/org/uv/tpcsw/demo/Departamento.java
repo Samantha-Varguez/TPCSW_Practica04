@@ -1,5 +1,6 @@
 package org.uv.tpcsw.demo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,27 +29,28 @@ public class Departamento implements Serializable {
     private long clave;
     private String nombre;
     
-//    @OneToMany(mappedBy = "depto", fetch = FetchType.LAZY)
-//    private Set<Empleado> empleados;
-//
-//    public Set<Empleado> getEmpleados() {
-//        return empleados;
-//    }
-//
-//    public void setEmpleados(Set<Empleado> empleados) {
-//        this.empleados = empleados;
-//    }
-//    
-//    @OneToMany();
-//    private List<Empleado> lstEmpleado = new ArrayList<>();
-//
-//    public List<Empleado> getLstEmpleado() {
-//        return lstEmpleado;
-//    }
-//
-//    public void setLstEmpleado(List<Empleado> lstEmpleado) {
-//        this.lstEmpleado = lstEmpleado;
-//    }
+    @OneToMany(mappedBy = "depto", fetch = FetchType.LAZY)
+    private Set<Empleado> empleados;
+
+    public Set<Empleado> getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Set<Empleado> empleados) {
+        this.empleados = empleados;
+    }
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "depto", fetch = FetchType.LAZY)
+    private List<Empleado> lstEmpleado = new ArrayList<>();
+
+    public List<Empleado> getLstEmpleado() {
+        return lstEmpleado;
+    }
+
+    public void setLstEmpleado(List<Empleado> lstEmpleado) {
+        this.lstEmpleado = lstEmpleado;
+    }
 
     public long getClave() {
         return clave;

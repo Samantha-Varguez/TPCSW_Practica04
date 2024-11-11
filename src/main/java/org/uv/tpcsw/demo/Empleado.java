@@ -1,5 +1,6 @@
 package org.uv.tpcsw.demo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Empleado implements Serializable {
     @Column
     private String telefono;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "depto_clave")
     private Departamento depto;
