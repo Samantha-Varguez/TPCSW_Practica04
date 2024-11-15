@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/api/Departamentos")
+@RequestMapping("/api/departamentos")
 public class ControllerDepartamentos {
     @Autowired
     private RepositoryDepartamentos repositoryDepartamentos;

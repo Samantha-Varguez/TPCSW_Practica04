@@ -3,6 +3,7 @@ package org.uv.tpcsw.demo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "departamentos")
 public class Departamento implements Serializable {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, 
             generator = "departamentos_clave_seq")
@@ -29,8 +31,9 @@ public class Departamento implements Serializable {
     private long clave;
     private String nombre;
     
-    @OneToMany(mappedBy = "depto", fetch = FetchType.LAZY)
-    private Set<Empleado> empleados;
+  @JsonIgnore
+    @OneToMany(mappedBy = "depto", fetch = FetchType.EAGER)
+    private Set<Empleado> empleados = new HashSet<>();
 
     public Set<Empleado> getEmpleados() {
         return empleados;
@@ -40,18 +43,6 @@ public class Departamento implements Serializable {
         this.empleados = empleados;
     }
     
-    @JsonIgnore
-    @OneToMany(mappedBy = "depto", fetch = FetchType.LAZY)
-    private List<Empleado> lstEmpleado = new ArrayList<>();
-
-    public List<Empleado> getLstEmpleado() {
-        return lstEmpleado;
-    }
-
-    public void setLstEmpleado(List<Empleado> lstEmpleado) {
-        this.lstEmpleado = lstEmpleado;
-    }
-
     public long getClave() {
         return clave;
     }

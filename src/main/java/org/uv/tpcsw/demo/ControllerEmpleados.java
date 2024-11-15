@@ -31,21 +31,25 @@ public class ControllerEmpleados {
     }
     
     @GetMapping("/{id}")
-    public Empleado get(@PathVariable String id) {
-        Optional<Empleado> res= repositoryEmpleados.findById(Long.valueOf(id));
+    public Empleado get(@PathVariable long id) {
+        Optional<Empleado> res= repositoryEmpleados.findById(id);
         return res.get();
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Empleado input) {
-        return repositoryEmpleados.findById(Long.valueOf(id))
-                .map(existingEmpleado -> {
-                    existingEmpleado.setNombre(input.getNombre()); // Example: setting new fields
-                    existingEmpleado.setDepto(input.getDepto());
-                    repositoryEmpleados.save(existingEmpleado);
-                    return new ResponseEntity<>(existingEmpleado, HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<?> put(@PathVariable long id, @RequestBody Empleado empleado) {
+          Optional<Empleado> resEmp = repositoryEmpleados.findById(id);
+        if (!resEmp.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Empleado empleadoExisted = resEmp.get();
+
+        empleadoExisted.setNombre(empleado.getNombre());
+        empleadoExisted.setTelefono(empleado.getTelefono());
+        empleadoExisted.setDireccion(empleado.getDireccion());
+        
+        repositoryEmpleados.save(empleadoExisted);
+        return new ResponseEntity<>(empleadoExisted, HttpStatus.OK);
     }
     
     @PostMapping
@@ -55,13 +59,14 @@ public class ControllerEmpleados {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-     if (repositoryEmpleados.existsById(Long.valueOf(id))) {
-            repositoryEmpleados.deleteById(Long.valueOf(id));
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+    public ResponseEntity<Empleado> delete(@PathVariable long id)  {
+        Optional<Empleado> resEmp = repositoryEmpleados.findById(id);
+
+        if (!resEmp.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        repositoryEmpleados.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
 }
